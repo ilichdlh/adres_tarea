@@ -23,3 +23,4 @@ La tabla 1 en el  archivo hypothe_a muesta la relación entre percepción de sal
 Ergo, significancia estadística entre las dos variables.
 p_healthy_and_p_money.jpg y p_healthy_vs_p_money.jpg muestran las relaciones gráficas entre las dos variables agregadas.
 Los archivos second_way.docx y third_way.docx es sólo para las variables que estaban expresadas de forma cuantitativa en el archivo original y revisa frecuencias, medias y outliers.
+El archivo g.docx es la calidad de vida y su relación con p_healthy y p_money, como es el producto de los dos es autoevidente la endogeneidad y autoreferencia de los datos.
