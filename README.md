@@ -1,7 +1,9 @@
 # adres_tarea
  task for adres
-now the explanation:
-R script se llama p_adres y tiene la solución a las partes 1, 2 y 3 del reto.
+# Para ejecutar la soluciones generales: 
+Buscar el R script se llama p_adres y tiene la solución a las partes 1, 2 y 3 del reto. Para correrlo debe estar en la misma carpeta y nivel que la base de datos.
+
+# Explicación de Contenido.
 Una solución alternativa a los puntos 1 y 2 se encuentra en el archivo en rMarkdown .rmd y se llama explor_archivo2.Rmd
 El archivo impreso de explor_archivo2.Rmd se llama explor_archivo2.html
 El archivo Data Frame Summary_names_modified.webarchive es el archivo con un resumen gráfico y de frecuencias y presencia de datos.
@@ -24,3 +26,4 @@ Ergo, significancia estadística entre las dos variables.
 p_healthy_and_p_money.jpg y p_healthy_vs_p_money.jpg muestran las relaciones gráficas entre las dos variables agregadas.
 Los archivos second_way.docx y third_way.docx es sólo para las variables que estaban expresadas de forma cuantitativa en el archivo original y revisa frecuencias, medias y outliers.
 El archivo g.docx es la calidad de vida y su relación con p_healthy y p_money, como es el producto de los dos es autoevidente la endogeneidad y autoreferencia de los datos.
+El archivo requirements.txt contiene la paquetería necesaria.
