@@ -1,0 +1,2848 @@
+---
+dataMaid: yes
+title: Prueba_adres_ilich
+subtitle: "análisis exploratorio y visualización"
+date: 2024-02-03 18:18:41.556213
+output: html_document
+---
+```{r , echo=FALSE, include=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+library("ggplot2")
+library("pander")
+```
+
+```{r 'visualFunctions', echo=FALSE, include=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+ggAggHist <- getFromNamespace("ggAggHist", "dataMaid")
+ggAggBarplot <- getFromNamespace("ggAggBarplot", "dataMaid")
+```
+
+# Data report overview
+The dataset examined has the following dimensions:
+
+
+---------------------------------
+Feature                    Result
+------------------------ --------
+Number of observations     504660
+
+Number of variables            74
+---------------------------------
+
+
+
+
+### Checks performed
+The following variable checks were performed, depending on the data type of each variable:
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+&nbsp;                                                 character   factor    labelled   haven labelled   numeric   integer   logical    Date   
+----------------------------------------------------- ----------- --------- ---------- ---------------- --------- --------- --------- ---------
+Identify miscoded missing values                        &times;    &times;   &times;       &times;       &times;   &times;             &times; 
+
+Identify prefixed and suffixed whitespace               &times;    &times;   &times;       &times;                                             
+
+Identify levels with < 6 obs.                           &times;    &times;   &times;       &times;                                             
+
+Identify case issues                                    &times;    &times;   &times;       &times;                                             
+
+Identify misclassified numeric or integer variables     &times;    &times;   &times;       &times;                                             
+
+Identify outliers                                                                                        &times;   &times;             &times; 
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+Please note that all numerical values in the following have been rounded to 2 decimals.
+
+
+# Summary table
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+&nbsp;                                                                           Variable class     # unique values   Missing observations  Any problems? 
+-------------------------------------------------------------------------------- ---------------- ----------------- ---------------------- ---------------
+[ano]                                                                            numeric                          7                 0.00 %                
+
+[Clase]                                                                          character                        2                 0.00 %                
+
+[Pertenencia\_Etnica]                                                            character                        6                 0.00 %                
+
+[Pertenencia\_Etnica\_Agregada]                                                  character                        2                 0.00 %                
+
+[Estrato]                                                                        character                        7                 0.00 %                
+
+[Colegio\_Caracter]                                                              character                        2                96.48 %     &times;    
+
+[Region]                                                                         character                       10                 5.25 %                
+
+[Region\_DANE]                                                                   character                        7                 5.25 %                
+
+[Departamento]                                                                   character                       34                 5.25 %                
+
+[cod\_dpto]                                                                      numeric                         34                 5.25 %     &times;    
+
+[Sexo]                                                                           character                        2                 0.00 %                
+
+[Grupo\_Decenal\_Edad]                                                           character                       10                 0.00 %                
+
+[Regimen\_Afiliacion\_p6100]                                                     character                        5                 6.32 %                
+
+[Departamento\_Co]                                                               character                       34                 0.00 %                
+
+[Quintil\_Ingreso\_Percapita]                                                    character                        5                 0.00 %                
+
+[Quintil\_Ingreso\_Percapita\_Clase]                                             character                        5                 0.00 %                
+
+[fex\_c]                                                                         numeric                      87023                 0.00 %     &times;    
+
+[Accion\_Tratar\_enfermedad\_P8563]                                              character                        9                92.70 %                
+
+[Accion\_Tratar\_enfermedad\_agregada\_P8563]                                    character                        4                92.70 %                
+
+[No\_Asistencia\_Razon\_p6153]                                                   character                       14                97.49 %                
+
+[No\_Asistencia\_Agregada\_p6153]                                                character                        3                97.41 %                
+
+[No\_Afiliacion\_Razon\_p768]                                                    character                        9                95.15 %                
+
+[Dias\_incapacidad\_p6134]                                                       numeric                         71                91.14 %     &times;    
+
+[Ocupacion\_p6240]                                                               character                        7                20.22 %                
+
+[Ocupacion\_Posicion\_p6435]                                                     character                       11                57.00 %                
+
+[Estado\_salud\_general\_P6127]                                                  character                        4                 0.00 %                
+
+[calidad\_Atencion\_Prevencion\_P8595]                                           character                        5                59.67 %                
+
+[Enfermedad\_Ultimo\_mes\_P5665]                                                 character                        2                 0.00 %                
+
+[Cubrir\_Costos\_Atención\_Salud\_EPS\_p8556s1]                                  character                        3                91.14 %                
+
+[Cubrir\_Costos\_Atencion\_Salud\_Seguro\_Voluntario\_p8556s2]                   character                        3                91.14 %                
+
+[Cubrir\_Costos\_Atencion\_Salud\_Seguro\_Obligatorio\_p8556s4]                  character                        3                91.14 %                
+
+[Cubrir\_Costos\_Atencion\_Salud\_Alcaldia\_p8556s5]                             character                        3                91.14 %                
+
+[Cubrir\_Costos\_Atencion\_Salud\_Propios\_familiares\_p8556s6]                  character                        3                91.14 %                
+
+[Cubrir\_Costos\_Atencion\_Salud\_Otras\_Personas\_p8556s9]                      character                        3                91.14 %                
+
+[Cubrir\_Costos\_Atencion\_Salud\_No\_Requiere\_p8556s10]                        character                        3                91.14 %                
+
+[Percepcion\_Calidad\_Entidad\_p6181]                                            character                        6                 6.48 %                
+
+[Percepcion\_Calidad\_Entidad\_Factor\_P798]                                     character                        8                88.02 %                
+
+[Percepcion\_Calidad\_Prestacion\_p8554]                                         logical                          1               100.00 %     &times;    
+
+[Percepcion\_Calidad\_Prestacion\_Factor\_P801]                                  character                        9                99.49 %                
+
+[Percepcion\_pobreza\_p5230]                                                     character                        3                 0.01 %                
+
+[Percepcion\_suficiencia\_ingresos\_p9090]                                       character                        4                 0.01 %                
+
+[Quejas\_Ultimo\_Ano]                                                            character                        3                63.57 %                
+
+[Tutelas\_Ultimo\_Ano]                                                           character                        3                 0.01 %                
+
+[Tutelas\_Ultimo\_Ano\_razon]                                                    character                        8                98.42 %                
+
+[Cronica\_Diagnostico\_p1930]                                                    character                        3                77.63 %                
+
+[Cronica\_Tratamiento\_p1930s1]                                                  character                        3                96.85 %                
+
+[Discapacidad\_Oir\_p1906s1]                                                     character                        5                72.38 %                
+
+[Consulta\_Prevencion\_Medico]                                                   character                        3                57.64 %                
+
+[Consulta\_Prevencion\_Odontologo]                                               character                        3                57.64 %                
+
+[Consulta\_Prevencion\_Medico\_Odontologo]                                       character                        5                42.36 %                
+
+[Discapacidad\_Hablar\_p1906s2]                                                  character                        5                72.38 %                
+
+[Discapacidad\_Ver\_p1906s3]                                                     character                        5                72.38 %                
+
+[Discapacidad\_Moverse\_Caminar\_p1906s4]                                        character                        5                72.38 %                
+
+[Discapacidad\_Usar\_Manos\_p1906s5]                                             character                        5                72.38 %                
+
+[Discapacidad\_Entender\_p1906s6]                                                character                        5                72.38 %                
+
+[Discapacidad\_Comer\_Vestirse\_Bañarse\_Solo\_p1906s7]                          character                        5                72.38 %                
+
+[Discapacidad\_Relacionarse\_p1906s8]                                            character                        5                72.38 %                
+
+[Dias\_Cita\_consulta\_Acudio\_especialista\_p6199]                              logical                          1               100.00 %     &times;    
+
+[Dias\_Cita\_consulta\_Medico\_p6199]                                            numeric                         29                97.10 %                
+
+[Dias\_Cita\_consulta\_Odontologo\_p6199]                                        numeric                         22                99.73 %                
+
+[Algun\_miembro\_Hogar\_No\_Consumio\_Ninguna\_Comida\_Un\_Dia\_O\_Mas\_p8706]   character                        3                14.71 %                
+
+[Controles\_Crecimiento\_Desarrollo\_p6161]                                      character                        3                97.48 %                
+
+[Controles\_Crecimiento\_Desarrollo\_numero\_p6161]                              numeric                         19                97.74 %     &times;    
+
+[Alfabeta\_p6160]                                                                character                        3                 7.62 %                
+
+[Asiste\_Educacion\_p8586]                                                       character                        3                 7.62 %                
+
+[Razon\_No\_Estudio\_p6218]                                                      character                       16                77.46 %     &times;    
+
+[Razon\_No\_Estudio\_Agregada\_p6218]                                            character                        3                77.46 %                
+
+[Nivel\_Educativo\_Actual\_p8587]                                                character                       14                34.88 %                
+
+[Nivel\_Educativo\_Alcanzado\_p1088]                                             character                        9                72.75 %                
+
+[Anos\_de\_Educacion]                                                            numeric                         32                 0.00 %                
+
+[Anos\_de\_Educacion.jefe]                                                       numeric                         32                 0.00 %                
+
+[Analfabetismo\_IPM]                                                             character                        2                 0.00 %                
+
+[Rezago\_Escolar\_IPM]                                                           character                        3                79.24 %                
+
+[Inasistencia\_Escolar\_IPM]                                                     character                        3                79.35 %                
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+# Variable list
+## ano
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------
+Feature                         Result
+------------------------- ------------
+Variable type                  numeric
+
+Number of missing obs.         0 (0 %)
+
+Number of unique values              7
+
+Median                            2015
+
+1st and 3rd quartiles       2013; 2017
+
+Min. and max.               2012; 2018
+--------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-1-ano', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggHist(data = structure(list(xmin = c(2012, 2012.5, 2013, 
+2013.5, 2014, 2014.5, 2015, 2015.5, 2016, 2016.5, 2017, 2017.5
+), xmax = c(2012.5, 2013, 2013.5, 2014, 2014.5, 2015, 2015.5, 
+2016, 2016.5, 2017, 2017.5, 2018), ymin = c(0, 0, 0, 0, 0, 0, 
+0, 0, 0, 0, 0, 0), ymax = c(74172L, 73155L, 0L, 67548L, 0L, 76026L, 
+0L, 74349L, 0L, 26500L, 0L, 112910L)), class = "data.frame", row.names = c(NA, 
+-12L)), vnam = "ano")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Clase
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------
+Feature                         Result
+------------------------- ------------
+Variable type                character
+
+Number of missing obs.         0 (0 %)
+
+Number of unique values              2
+
+Mode                        "Cabecera"
+--------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-2-Clase', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("Cabecera", 
+"Centros poblados, inspección de policía o corregimientos"), class = "factor"), 
+    y = c(312485L, 192175L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Clase")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Pertenencia\_Etnica
+
+<div class = "row">
+<div class = "col-lg-8">
+
+-------------------------------------------------------
+Feature                                          Result
+------------------------- -----------------------------
+Variable type                                 character
+
+Number of missing obs.                          0 (0 %)
+
+Number of unique values                               6
+
+Mode                        "Ninguno de los anteriores"
+-------------------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-3-Pertenencia-Etnica', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:6, levels = c("Gitano (rom)", 
+"Indígena", "Negro, mulato (afrodescendiente)", "Ninguno de los anteriores", 
+"Palenquero", "Raizal del archipiélago"), class = "factor"), 
+    y = c(102L, 30673L, 63699L, 406381L, 240L, 3565L)), class = "data.frame", row.names = c(NA, 
+-6L)), vnam = "Pertenencia_Etnica")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Pertenencia\_Etnica\_Agregada
+
+<div class = "row">
+<div class = "col-lg-8">
+
+----------------------------------------------------
+Feature                                       Result
+------------------------- --------------------------
+Variable type                              character
+
+Number of missing obs.                       0 (0 %)
+
+Number of unique values                            2
+
+Mode                        "Sin Pertenencia étnica"
+----------------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-4-Pertenencia-Etnica-Agregada', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("Con Pertenencia étnica", 
+"Sin Pertenencia étnica"), class = "factor"), y = c(98279L, 
+406381L)), class = "data.frame", row.names = c(NA, -2L)), vnam = "Pertenencia_Etnica_Agregada")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Estrato
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.               0 (0 %)
+
+Number of unique values                    7
+
+Mode                        "1. Bajo - Bajo"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-5-Estrato', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:7, levels = c("0. Sin estrato", 
+"1. Bajo - Bajo", "2. Bajo", "3. Medio - Bajo", "4. Medio", "5. Medio - Alto", 
+"6. Alto"), class = "factor"), y = c(28992L, 221783L, 173011L, 
+62653L, 11957L, 3907L, 2357L)), class = "data.frame", row.names = c(NA, 
+-7L)), vnam = "Estrato")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Colegio\_Caracter
+
+* The variable only takes one (non-missing) value: \"Oficial\". The variable contains 96.48 \% missing observations.
+
+
+
+---
+
+## Region
+
+<div class = "row">
+<div class = "col-lg-8">
+
+------------------------------------------
+Feature                             Result
+------------------------- ----------------
+Variable type                    character
+
+Number of missing obs.      26500 (5.25 %)
+
+Number of unique values                  9
+
+Mode                           "Atlántica"
+------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-7-Region', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:9, levels = c("Antioquia", 
+"Atlántica", "Bogotá", "Central", "Oriental", "Orinoquía - Amazonia", 
+"Pacífica (sin Valle)", "San Andrés, Providencia y Santa Catalina", 
+"Valle del Cauca"), class = "factor"), y = c(51593L, 89281L, 
+32108L, 71050L, 66422L, 27095L, 65638L, 9999L, 64974L)), class = "data.frame", row.names = c(NA, 
+-9L)), vnam = "Region")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Region\_DANE
+
+<div class = "row">
+<div class = "col-lg-8">
+
+------------------------------------------
+Feature                             Result
+------------------------- ----------------
+Variable type                    character
+
+Number of missing obs.      26500 (5.25 %)
+
+Number of unique values                  6
+
+Mode                            "Pacífica"
+------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-8-Region-DANE', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:6, levels = c("Amazonía", 
+"Caribe", "Central", "Eje Cafetero - Antioquia", "Llanos - Orinoquía", 
+"Pacífica"), class = "factor"), y = c(23306L, 99280L, 100304L, 
+100572L, 24086L, 130612L)), class = "data.frame", row.names = c(NA, 
+-6L)), vnam = "Region_DANE")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Departamento
+
+<div class = "row">
+<div class = "col-lg-8">
+
+---------------------------------------------
+Feature                                Result
+------------------------- -------------------
+Variable type                       character
+
+Number of missing obs.         26500 (5.25 %)
+
+Number of unique values                    33
+
+Mode                        "Valle del Cauca"
+---------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-9-Departamento', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:33, levels = c("Amazonas", 
+"Antioquía", "Arauca", "Atlántico", "Bogotá", "Bolívar", 
+"Boyacá", "Caldas", "Caquetá", "Casanare", "Cauca", "Cesar", 
+"Choco", "Córdoba", "Cundinamarca", "Guainía", "Guaviare", 
+"Huila", "La Guajira", "Magdalena", "Meta", "Nariño", "Norte de Santander", 
+"Putumayo", "Quindío", "Risaralda", "San Andrés, Providencia y Santa Catalina", 
+"Santander", "Sucre", "Tolima", "Valle del Cauca", "Vaupés", 
+"Vichada"), class = "factor"), y = c(3202L, 51593L, 5920L, 16283L, 
+32108L, 14424L, 15218L, 13139L, 9299L, 5839L, 27269L, 11663L, 
+11927L, 14674L, 17000L, 735L, 2999L, 12772L, 8706L, 13183L, 10998L, 
+26442L, 11086L, 4853L, 9416L, 11009L, 9999L, 12120L, 10348L, 
+15415L, 64974L, 2218L, 1329L)), class = "data.frame", row.names = c(NA, 
+-33L)), vnam = "Departamento")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## cod\_dpto
+
+<div class = "row">
+<div class = "col-lg-8">
+
+------------------------------------------
+Feature                             Result
+------------------------- ----------------
+Variable type                      numeric
+
+Number of missing obs.      26500 (5.25 %)
+
+Number of unique values                 33
+
+Median                                  41
+
+1st and 3rd quartiles               15; 70
+
+Min. and max.                        5; 99
+------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-10-cod-dpto', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggHist(data = structure(list(xmin = c(5L, 10L, 15L, 20L, 25L, 
+30L, 35L, 40L, 45L, 50L, 55L, 60L, 65L, 70L, 75L, 80L, 85L, 90L, 
+95L), xmax = c(10L, 15L, 20L, 25L, 30L, 35L, 40L, 45L, 50L, 55L, 
+60L, 65L, 70L, 75L, 80L, 85L, 90L, 95L, 100L), ymin = c(0, 0, 
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), ymax = c(67876L, 
+61750L, 61370L, 31674L, 11927L, 0L, 0L, 21478L, 24181L, 37528L, 
+0L, 9416L, 33477L, 15415L, 64974L, 11759L, 14852L, 6936L, 3547L
+)), class = "data.frame", row.names = c(NA, -19L)), vnam = "cod_dpto")
+```
+
+</div>
+</div>
+
+
+- The following suspected missing value codes enter as regular values: \"99\". 
+
+
+
+---
+
+## Sexo
+
+<div class = "row">
+<div class = "col-lg-8">
+
+-------------------------------------
+Feature                        Result
+------------------------- -----------
+Variable type               character
+
+Number of missing obs.        0 (0 %)
+
+Number of unique values             2
+
+Mode                          "Mujer"
+-------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-11-Sexo', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("Hombre", 
+"Mujer"), class = "factor"), y = c(245029L, 259631L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Sexo")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Grupo\_Decenal\_Edad
+
+<div class = "row">
+<div class = "col-lg-8">
+
+-------------------------------------
+Feature                        Result
+------------------------- -----------
+Variable type               character
+
+Number of missing obs.        0 (0 %)
+
+Number of unique values            10
+
+Mode                        "[10,20)"
+-------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-12-Grupo-Decenal-Edad', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:10, levels = c("[0,10)", 
+"[10,20)", "[20,30)", "[30,40)", "[40,50)", "[50,60)", "[60,70)", 
+"[70,80)", "[80,90)", "[90 y más)"), class = "factor"), y = c(82917L, 
+94674L, 75737L, 68028L, 62692L, 54509L, 35658L, 20554L, 8441L, 
+1450L)), class = "data.frame", row.names = c(NA, -10L)), vnam = "Grupo_Decenal_Edad")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Regimen\_Afiliacion\_p6100
+
+<div class = "row">
+<div class = "col-lg-8">
+
+---------------------------------------------------
+Feature                                      Result
+------------------------- -------------------------
+Variable type                             character
+
+Number of missing obs.               31875 (6.32 %)
+
+Number of unique values                           4
+
+Mode                        "2. Subsidiado (eps-s)"
+---------------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-13-Regimen-Afiliacion-p6100', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:4, levels = c("1. Contributivo (EPS)", 
+"2. Subsidiado (eps-s)", "3. Especial (fuerzas armadas, ecopetrol, universidades públicas", 
+"4. No sabe, no informa"), class = "factor"), y = c(170668L, 
+288733L, 12541L, 843L)), class = "data.frame", row.names = c(NA, 
+-4L)), vnam = "Regimen_Afiliacion_p6100")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Departamento\_Co
+
+<div class = "row">
+<div class = "col-lg-8">
+
+------------------------------------------------------
+Feature                                         Result
+------------------------- ----------------------------
+Variable type                                character
+
+Number of missing obs.                         0 (0 %)
+
+Number of unique values                             34
+
+Mode                        "Valle del Cauca Colombia"
+------------------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-14-Departamento-Co', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:34, levels = c("Amazonas Colombia", 
+"Antioquía Colombia", "Arauca Colombia", "Atlántico Colombia", 
+"Bogotá Colombia", "Bolívar Colombia", "Boyacá Colombia", 
+"Caldas Colombia", "Caquetá Colombia", "Casanare Colombia", 
+"Cauca Colombia", "Cesar Colombia", "Choco Colombia", "Córdoba Colombia", 
+"Cundinamarca Colombia", "Guainía  Colombia", "Guaviare Colombia", 
+"Huila Colombia", "La Guajira Colombia", "Magdalena Colombia", 
+"Meta Colombia", "NA Colombia", "Nariño Colombia", "Norte de Santander Colombia", 
+"Putumayo Colombia", "Quindío Colombia", "Risaralda Colombia", 
+"San Andrés, Providencia y Santa Catalina Colombia", "Santander Colombia", 
+"Sucre Colombia", "Tolima Colombia", "Valle del Cauca Colombia", 
+"Vaupés Colombia", "Vichada Colombia"), class = "factor"), y = c(3202L, 
+51593L, 5920L, 16283L, 32108L, 14424L, 15218L, 13139L, 9299L, 
+5839L, 27269L, 11663L, 11927L, 14674L, 17000L, 735L, 2999L, 12772L, 
+8706L, 13183L, 10998L, 26500L, 26442L, 11086L, 4853L, 9416L, 
+11009L, 9999L, 12120L, 10348L, 15415L, 64974L, 2218L, 1329L)), class = "data.frame", row.names = c(NA, 
+-34L)), vnam = "Departamento_Co")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Quintil\_Ingreso\_Percapita
+
+<div class = "row">
+<div class = "col-lg-8">
+
+---------------------------------------
+Feature                          Result
+------------------------- -------------
+Variable type                 character
+
+Number of missing obs.          0 (0 %)
+
+Number of unique values               5
+
+Mode                        "Quintil 4"
+---------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-15-Quintil-Ingreso-Percapita', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:5, levels = c("Quintil 1", 
+"Quintil 2", "Quintil 3", "Quintil 4", "Quintil 5"), class = "factor"), 
+    y = c(98934L, 100647L, 101684L, 102279L, 101116L)), class = "data.frame", row.names = c(NA, 
+-5L)), vnam = "Quintil_Ingreso_Percapita")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Quintil\_Ingreso\_Percapita\_Clase
+
+<div class = "row">
+<div class = "col-lg-8">
+
+---------------------------------------
+Feature                          Result
+------------------------- -------------
+Variable type                 character
+
+Number of missing obs.          0 (0 %)
+
+Number of unique values               5
+
+Mode                        "Quintil 2"
+---------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-16-Quintil-Ingreso-Percapita-Clase', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:5, levels = c("Quintil 1", 
+"Quintil 2", "Quintil 3", "Quintil 4", "Quintil 5"), class = "factor"), 
+    y = c(100017L, 101531L, 100948L, 101338L, 100826L)), class = "data.frame", row.names = c(NA, 
+-5L)), vnam = "Quintil_Ingreso_Percapita_Clase")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## fex\_c
+
+<div class = "row">
+<div class = "col-lg-8">
+
+------------------------------------------
+Feature                             Result
+------------------------- ----------------
+Variable type                      numeric
+
+Number of missing obs.             0 (0 %)
+
+Number of unique values              87023
+
+Median                              343.03
+
+1st and 3rd quartiles       151.07; 747.89
+
+Min. and max.                2.43; 9401.79
+------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-17-fex-c', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggHist(data = structure(list(xmin = c(0, 500, 1000, 1500, 
+2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 
+7500, 8000, 8500, 9000), xmax = c(500, 1000, 1500, 2000, 2500, 
+3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 
+8500, 9000, 9500), ymin = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+0, 0, 0, 0, 0, 0, 0, 0), ymax = c(318185L, 94398L, 44406L, 22697L, 
+12967L, 6618L, 2618L, 1000L, 642L, 361L, 336L, 212L, 117L, 38L, 
+41L, 8L, 8L, 0L, 8L)), class = "data.frame", row.names = c(NA, 
+-19L)), vnam = "fex_c")
+```
+
+</div>
+</div>
+
+
+- Note that the following possible outlier values were detected: \"4086.63\", \"4092.87\", \"4095.38\", \"4113.64\", \"4113.96\", ..., \"7391.16\", \"7682.32\", \"7860.04\", \"8008.04\", \"9401.79\" (268 values omitted). 
+
+
+
+---
+
+## Accion\_Tratar\_enfermedad\_P8563
+
+<div class = "row">
+<div class = "col-lg-8">
+
+-----------------------------------------------------------------------------------
+Feature                                                                      Result
+------------------------- ---------------------------------------------------------
+Variable type                                                             character
+
+Number of missing obs.                                              467811 (92.7 %)
+
+Number of unique values                                                           8
+
+Mode                        "Acudió a Institución prestadora de servicios de salud"
+-----------------------------------------------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-18-Accion-Tratar-enfermedad-P8563', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:8, levels = c("Acudió a Institución prestadora de servicios de salud", 
+"Acudió a un boticario, farmaceuta, droguista", "Acudió de forma particular a un médico general, especialista, odontólogo, terapeuta o profesional de la salud", 
+"Asistió a terapias alternativas (acupuntura, esencias florales, musicoterapia, homeopatía, etc.)", 
+"Autorecetado", "Consultó a un empírico, curandero, yerbatero, comadrona", 
+"No hizo nada", "Usó remedios caseros"), class = "factor"), 
+    y = c(22640L, 2252L, 3023L, 101L, 3796L, 228L, 1041L, 3768L
+    )), class = "data.frame", row.names = c(NA, -8L)), vnam = "Accion_Tratar_enfermedad_P8563")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Accion\_Tratar\_enfermedad\_agregada\_P8563
+
+<div class = "row">
+<div class = "col-lg-8">
+
+------------------------------------------------
+Feature                                   Result
+------------------------- ----------------------
+Variable type                          character
+
+Number of missing obs.           467811 (92.7 %)
+
+Number of unique values                        3
+
+Mode                        "Médica Profesional"
+------------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-19-Accion-Tratar-enfermedad-agregada-P8563', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:3, levels = c("Boticario, Medicina alternativa, remedios caseros, autorecetado", 
+"Médica Profesional", "No hizo nada"), class = "factor"), y = c(10145L, 
+25663L, 1041L)), class = "data.frame", row.names = c(NA, -3L)), 
+    vnam = "Accion_Tratar_enfermedad_agregada_P8563")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## No\_Asistencia\_Razon\_p6153
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      491980 (97.49 %)
+
+Number of unique values                   13
+
+Mode                             "Caso leve"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-20-No-Asistencia-Razon-p6153', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:13, levels = c("Caso leve", 
+"Centro de atención lejano", "Dificultad para viajar", "Espera demasiado prolongada", 
+"Falta de dinero", "Falta de tiempo", "Mal servicio o cita distanciada en el tiempo", 
+"Muchos trámites para la cita", "No confianza en los médicos", 
+"No cubierto o autorizado por el seguro", "No lo atendieron", 
+"Otro", "Problema no resuelto previamente"), class = "factor"), 
+    y = c(7014L, 766L, 131L, 486L, 1070L, 227L, 1101L, 584L, 
+    440L, 86L, 194L, 306L, 275L)), class = "data.frame", row.names = c(NA, 
+-13L)), vnam = "No_Asistencia_Razon_p6153")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## No\_Asistencia\_Agregada\_p6153
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      491569 (97.41 %)
+
+Number of unique values                    2
+
+Mode                               "Demanda"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-21-No-Asistencia-Agregada-p6153', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("Demanda", 
+"Oferta"), class = "factor"), y = c(9026L, 4065L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "No_Asistencia_Agregada_p6153")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## No\_Afiliacion\_Razon\_p768
+
+<div class = "row">
+<div class = "col-lg-8">
+
+---------------------------------------------------
+Feature                                      Result
+------------------------- -------------------------
+Variable type                             character
+
+Number of missing obs.             480195 (95.15 %)
+
+Number of unique values                           8
+
+Mode                        "Afiliación en trámite"
+---------------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-22-No-Afiliacion-Razon-p768', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:8, levels = c("Afiliación en trámite", 
+"Desconocimiento", "Entidad cercana no disponible", "Falta de dinero", 
+"No interesa", "No vinculado laboralmente", "Otras razones", 
+"Trámites complejos"), class = "factor"), y = c(7018L, 537L, 
+381L, 2988L, 3782L, 2958L, 3234L, 3567L)), class = "data.frame", row.names = c(NA, 
+-8L)), vnam = "No_Afiliacion_Razon_p768")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Dias\_incapacidad\_p6134
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                        numeric
+
+Number of missing obs.      459922 (91.14 %)
+
+Number of unique values                   70
+
+Median                                     2
+
+1st and 3rd quartiles                   0; 7
+
+Min. and max.                         0; 120
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-23-Dias-incapacidad-p6134', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggHist(data = structure(list(xmin = c(0, 10, 20, 30, 40, 50, 
+60, 70, 80, 90, 100, 110), xmax = c(10, 20, 30, 40, 50, 60, 70, 
+80, 90, 100, 110, 120), ymin = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+0, 0), ymax = c(38747L, 3410L, 1328L, 68L, 79L, 228L, 5L, 8L, 
+144L, 574L, 2L, 145L)), class = "data.frame", row.names = c(NA, 
+-12L)), vnam = "Dias_incapacidad_p6134")
+```
+
+</div>
+</div>
+
+
+- Note that the following possible outlier values were detected: \"55\", \"56\", \"58\", \"60\", \"67\", ..., \"105\", \"110\", \"112\", \"119\", \"120\" (12 values omitted). 
+
+
+
+---
+
+## Ocupacion\_p6240
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      102042 (20.22 %)
+
+Number of unique values                    6
+
+Mode                            "Trabajando"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-24-Ocupacion-p6240', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:6, levels = c("Buscando trabajo", 
+"Estudiando", "Incapacitado permanentemente para trabajar", "Oficios del hogar", 
+"Otra actividad", "Trabajando"), class = "factor"), y = c(12416L, 
+63667L, 11975L, 109733L, 17879L, 186948L)), class = "data.frame", row.names = c(NA, 
+-6L)), vnam = "Ocupacion_p6240")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Ocupacion\_Posicion\_p6435
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------------------------------------
+Feature                                                             Result
+------------------------- ------------------------------------------------
+Variable type                                                    character
+
+Number of missing obs.                                       287670 (57 %)
+
+Number of unique values                                                 10
+
+Mode                        "Trabajador independiente o por cuenta propia"
+--------------------------------------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-25-Ocupacion-Posicion-p6435', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:10, levels = c("Ayudante sin remuneracion (hijo o familiar de empleados domésticos...)", 
+"Empleado doméstico", "Jornalero de peón", "Obrero o empleado de empresa particular", 
+"Obrero o empleado del gobierno", "Patrón o empleado", "Profesional independiente", 
+"Trabajador de finca, tierra o parcela propia en arriendo, ap", 
+"Trabajador independiente o por cuenta propia", "Trabajador sin remuneración"
+), class = "factor"), y = c(1195L, 5184L, 11866L, 71344L, 10817L, 
+6574L, 3409L, 12627L, 88698L, 5276L)), class = "data.frame", row.names = c(NA, 
+-10L)), vnam = "Ocupacion_Posicion_p6435")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Estado\_salud\_general\_P6127
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------
+Feature                         Result
+------------------------- ------------
+Variable type                character
+
+Number of missing obs.         0 (0 %)
+
+Number of unique values              4
+
+Mode                        "2. Bueno"
+--------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-26-Estado-salud-general-P6127', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:4, levels = c("1. Muy bueno", 
+"2. Bueno", "3. Regular", "4. Malo"), class = "factor"), y = c(50281L, 
+349725L, 95540L, 9114L)), class = "data.frame", row.names = c(NA, 
+-4L)), vnam = "Estado_salud_general_P6127")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## calidad\_Atencion\_Prevencion\_P8595
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      301123 (59.67 %)
+
+Number of unique values                    4
+
+Mode                                 "Buena"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-27-calidad-Atencion-Prevencion-P8595', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:4, levels = c("Buena", 
+"Mala", "Muy buena", "Muy Mala"), class = "factor"), y = c(170135L, 
+17563L, 14786L, 1053L)), class = "data.frame", row.names = c(NA, 
+-4L)), vnam = "calidad_Atencion_Prevencion_P8595")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Enfermedad\_Ultimo\_mes\_P5665
+
+<div class = "row">
+<div class = "col-lg-8">
+
+-------------------------------------
+Feature                        Result
+------------------------- -----------
+Variable type               character
+
+Number of missing obs.        0 (0 %)
+
+Number of unique values             2
+
+Mode                             "No"
+-------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-28-Enfermedad-Ultimo-mes-P5665', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No", 
+"Sí"), class = "factor"), y = c(459922L, 44738L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Enfermedad_Ultimo_mes_P5665")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Cubrir\_Costos\_Atención\_Salud\_EPS\_p8556s1
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------------------------------------------
+Feature                                                                   Result
+------------------------- ------------------------------------------------------
+Variable type                                                          character
+
+Number of missing obs.                                          459922 (91.14 %)
+
+Number of unique values                                                        2
+
+Mode                        "Entidad de seguridad social de la cual es afiliado"
+--------------------------------------------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-29-Cubrir-Costos-Atencion-Salud-EPS-p8556s1', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("Entidad de seguridad social de la cual es afiliado", 
+"Otros"), class = "factor"), y = c(26247L, 18491L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Cubrir_Costos_Atención_Salud_EPS_p8556s1")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Cubrir\_Costos\_Atencion\_Salud\_Seguro\_Voluntario\_p8556s2
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      459922 (91.14 %)
+
+Number of unique values                    2
+
+Mode                                 "Otros"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-30-Cubrir-Costos-Atencion-Salud-Seguro-Voluntario-p8556s2', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("Otros", 
+"Seguro médico, plan complementario o medicina prepagada"), class = "factor"), 
+    y = c(44367L, 371L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Cubrir_Costos_Atencion_Salud_Seguro_Voluntario_p8556s2")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Cubrir\_Costos\_Atencion\_Salud\_Seguro\_Obligatorio\_p8556s4
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      459922 (91.14 %)
+
+Number of unique values                    2
+
+Mode                                 "Otros"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-31-Cubrir-Costos-Atencion-Salud-Seguro-Obligatorio-p8556s4', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("Otros", 
+"Seguro obligatorio de accidentes de tránsito (SOAT)"), class = "factor"), 
+    y = c(44504L, 234L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Cubrir_Costos_Atencion_Salud_Seguro_Obligatorio_p8556s4")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Cubrir\_Costos\_Atencion\_Salud\_Alcaldia\_p8556s5
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      459922 (91.14 %)
+
+Number of unique values                    2
+
+Mode                                 "Otros"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-32-Cubrir-Costos-Atencion-Salud-Alcaldia-p8556s5', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("Otros", 
+"Secretaría de salud o la alcaldía"), class = "factor"), y = c(44560L, 
+178L)), class = "data.frame", row.names = c(NA, -2L)), vnam = "Cubrir_Costos_Atencion_Salud_Alcaldia_p8556s5")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Cubrir\_Costos\_Atencion\_Salud\_Propios\_familiares\_p8556s6
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      459922 (91.14 %)
+
+Number of unique values                    2
+
+Mode                                 "Otros"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-33-Cubrir-Costos-Atencion-Salud-Propios-familiares-p8556s6', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("Otros", 
+"Recursos propios y/o familiares"), class = "factor"), y = c(38174L, 
+6564L)), class = "data.frame", row.names = c(NA, -2L)), vnam = "Cubrir_Costos_Atencion_Salud_Propios_familiares_p8556s6")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Cubrir\_Costos\_Atencion\_Salud\_Otras\_Personas\_p8556s9
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      459922 (91.14 %)
+
+Number of unique values                    2
+
+Mode                                 "Otros"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-34-Cubrir-Costos-Atencion-Salud-Otras-Personas-p8556s9', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("Otros", 
+"Recursos de otras personas"), class = "factor"), y = c(44389L, 
+349L)), class = "data.frame", row.names = c(NA, -2L)), vnam = "Cubrir_Costos_Atencion_Salud_Otras_Personas_p8556s9")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Cubrir\_Costos\_Atencion\_Salud\_No\_Requiere\_p8556s10
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      459922 (91.14 %)
+
+Number of unique values                    2
+
+Mode                                 "Otros"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-35-Cubrir-Costos-Atencion-Salud-No-Requiere-p8556s10', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No se requirió pago", 
+"Otros"), class = "factor"), y = c(198L, 44540L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Cubrir_Costos_Atencion_Salud_No_Requiere_p8556s10")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Percepcion\_Calidad\_Entidad\_p6181
+
+<div class = "row">
+<div class = "col-lg-8">
+
+------------------------------------------
+Feature                             Result
+------------------------- ----------------
+Variable type                    character
+
+Number of missing obs.      32718 (6.48 %)
+
+Number of unique values                  5
+
+Mode                            "2. Bueno"
+------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-36-Percepcion-Calidad-Entidad-p6181', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:5, levels = c("1. Muy bueno", 
+"2. Bueno", "3. Mala", "4. Muy Mala", "5. No Sabe"), class = "factor"), 
+    y = c(26717L, 350158L, 72270L, 12262L, 10535L)), class = "data.frame", row.names = c(NA, 
+-5L)), vnam = "Percepcion_Calidad_Entidad_p6181")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Percepcion\_Calidad\_Entidad\_Factor\_P798
+
+<div class = "row">
+<div class = "col-lg-8">
+
+---------------------------------------------
+Feature                                Result
+------------------------- -------------------
+Variable type                       character
+
+Number of missing obs.       444192 (88.02 %)
+
+Number of unique values                     7
+
+Mode                        "Demora en citas"
+---------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-37-Percepcion-Calidad-Entidad-Factor-P798', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:7, levels = c("Demora en atención médica", 
+"Demora en citas", "Falta capacidad médica", "Infraestructura", 
+"Mala atención", "Otro", "Trámites excesivos"), class = "factor"), 
+    y = c(4837L, 28088L, 1605L, 1651L, 12624L, 1384L, 10279L)), class = "data.frame", row.names = c(NA, 
+-7L)), vnam = "Percepcion_Calidad_Entidad_Factor_P798")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Percepcion\_Calidad\_Prestacion\_p8554
+
+* The variable only takes one value: \"NA\".
+
+
+
+---
+
+## Percepcion\_Calidad\_Prestacion\_Factor\_P801
+
+<div class = "row">
+<div class = "col-lg-8">
+
+------------------------------------------------------------------------------------------
+Feature                                                                             Result
+------------------------- ----------------------------------------------------------------
+Variable type                                                                    character
+
+Number of missing obs.                                                    502075 (99.49 %)
+
+Number of unique values                                                                  8
+
+Mode                        "Mala atención del personal administrativo o asistencial (méd"
+------------------------------------------------------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-39-Percepcion-Calidad-Prestacion-Factor-P801', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:8, levels = c("Condiciones deficientes de infraestructura, dotación o mobil", 
+"Demora en la asignación de citas", "Demora en la atención por parte del personal médico", 
+"Falta de capacidad, conocimientos o habilidad del personal a", 
+"Mala atención del personal administrativo o asistencial (méd", 
+"Otro", "Problemas relacionados con los medicamentos", "Trámites excesivos o dispendiosos"
+), class = "factor"), y = c(53L, 423L, 668L, 219L, 771L, 63L, 
+75L, 313L)), class = "data.frame", row.names = c(NA, -8L)), vnam = "Percepcion_Calidad_Prestacion_Factor_P801")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Percepcion\_pobreza\_p5230
+
+<div class = "row">
+<div class = "col-lg-8">
+
+---------------------------------------
+Feature                          Result
+------------------------- -------------
+Variable type                 character
+
+Number of missing obs.      73 (0.01 %)
+
+Number of unique values               2
+
+Mode                               "No"
+---------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-40-Percepcion-pobreza-p5230', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No", 
+"Sí"), class = "factor"), y = c(277428L, 227159L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Percepcion_pobreza_p5230")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Percepcion\_suficiencia\_ingresos\_p9090
+
+<div class = "row">
+<div class = "col-lg-8">
+
+----------------------------------------------------------------
+Feature                                                   Result
+------------------------- --------------------------------------
+Variable type                                          character
+
+Number of missing obs.                               73 (0.01 %)
+
+Number of unique values                                        3
+
+Mode                        "Alcanza para cubrir gastos mínimos"
+----------------------------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-41-Percepcion-suficiencia-ingresos-p9090', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:3, levels = c("Alcanza para cubrir gastos mínimos", 
+"Cubre más que gastos mínimos", "No alcanza para cubrir gastos mínimos"
+), class = "factor"), y = c(284323L, 42112L, 178152L)), class = "data.frame", row.names = c(NA, 
+-3L)), vnam = "Percepcion_suficiencia_ingresos_p9090")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Quejas\_Ultimo\_Ano
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      320834 (63.57 %)
+
+Number of unique values                    2
+
+Mode                                    "No"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-42-Quejas-Ultimo-Ano', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No", 
+"Sí"), class = "factor"), y = c(167368L, 16458L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Quejas_Ultimo_Ano")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Tutelas\_Ultimo\_Ano
+
+<div class = "row">
+<div class = "col-lg-8">
+
+---------------------------------------
+Feature                          Result
+------------------------- -------------
+Variable type                 character
+
+Number of missing obs.      73 (0.01 %)
+
+Number of unique values               2
+
+Mode                               "No"
+---------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-43-Tutelas-Ultimo-Ano', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No", 
+"Sí"), class = "factor"), y = c(496591L, 7996L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Tutelas_Ultimo_Ano")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Tutelas\_Ultimo\_Ano\_razon
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------------------------------------
+Feature                                                             Result
+------------------------- ------------------------------------------------
+Variable type                                                    character
+
+Number of missing obs.                                    496664 (98.42 %)
+
+Number of unique values                                                  7
+
+Mode                        "No lo atendieron en una institución de salud"
+--------------------------------------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-44-Tutelas-Ultimo-Ano-razon', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:7, levels = c("Le negaron el cambio de régimen de afiliación a salud.", 
+"No está afiliado al sistema general de seguridad social en s", 
+"No está de acuerdo con el nivel de sisben asignado", "No le dieron los medicamentos", 
+"No lo atendieron en una institución de salud", "No tiene dinero para pagar un tratamiento", 
+"Otra"), class = "factor"), y = c(84L, 116L, 51L, 2528L, 2570L, 
+994L, 1653L)), class = "data.frame", row.names = c(NA, -7L)), 
+    vnam = "Tutelas_Ultimo_Ano_razon")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Cronica\_Diagnostico\_p1930
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      391750 (77.63 %)
+
+Number of unique values                    2
+
+Mode                                    "No"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-45-Cronica-Diagnostico-p1930', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No", 
+"Sí"), class = "factor"), y = c(97012L, 15898L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Cronica_Diagnostico_p1930")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Cronica\_Tratamiento\_p1930s1
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      488762 (96.85 %)
+
+Number of unique values                    2
+
+Mode                                    "Sí"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-46-Cronica-Tratamiento-p1930s1', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No", 
+"Sí"), class = "factor"), y = c(1837L, 14061L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Cronica_Tratamiento_p1930s1")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Discapacidad\_Oir\_p1906s1
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      365250 (72.38 %)
+
+Number of unique values                    4
+
+Mode                        "Sin dificultad"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-47-Discapacidad-Oir-p1906s1', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:4, levels = c("No puede hacerlo", 
+"Sí, con alguna dificultad", "Sí, con mucha dificultad", "Sin dificultad"
+), class = "factor"), y = c(272L, 4158L, 1339L, 133641L)), class = "data.frame", row.names = c(NA, 
+-4L)), vnam = "Discapacidad_Oir_p1906s1")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Consulta\_Prevencion\_Medico
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      290901 (57.64 %)
+
+Number of unique values                    2
+
+Mode                                    "Si"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-48-Consulta-Prevencion-Medico', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No", 
+"Si"), class = "factor"), y = c(73246L, 140513L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Consulta_Prevencion_Medico")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Consulta\_Prevencion\_Odontologo
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      290901 (57.64 %)
+
+Number of unique values                    2
+
+Mode                                    "Si"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-49-Consulta-Prevencion-Odontologo', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No", 
+"Si"), class = "factor"), y = c(97481L, 116278L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Consulta_Prevencion_Odontologo")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Consulta\_Prevencion\_Medico\_Odontologo
+
+<div class = "row">
+<div class = "col-lg-8">
+
+-------------------------------------------------------
+Feature                                          Result
+------------------------- -----------------------------
+Variable type                                 character
+
+Number of missing obs.                 213759 (42.36 %)
+
+Number of unique values                               4
+
+Mode                        "Al médico y al odontólogo"
+-------------------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-50-Consulta-Prevencion-Medico-Odontologo', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:4, levels = c("A ninguno", 
+"Al médico y al odontólogo", "Sólo al médico", "Sólo al odontólogo"
+), class = "factor"), y = c(93950L, 100840L, 79322L, 16789L)), class = "data.frame", row.names = c(NA, 
+-4L)), vnam = "Consulta_Prevencion_Medico_Odontologo")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Discapacidad\_Hablar\_p1906s2
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      365250 (72.38 %)
+
+Number of unique values                    4
+
+Mode                        "Sin dificultad"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-51-Discapacidad-Hablar-p1906s2', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:4, levels = c("No puede hacerlo", 
+"Sí, con alguna dificultad", "Sí, con mucha dificultad", "Sin dificultad"
+), class = "factor"), y = c(812L, 1569L, 759L, 136270L)), class = "data.frame", row.names = c(NA, 
+-4L)), vnam = "Discapacidad_Hablar_p1906s2")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Discapacidad\_Ver\_p1906s3
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      365250 (72.38 %)
+
+Number of unique values                    4
+
+Mode                        "Sin dificultad"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-52-Discapacidad-Ver-p1906s3', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:4, levels = c("No puede hacerlo", 
+"Sí, con alguna dificultad", "Sí, con mucha dificultad", "Sin dificultad"
+), class = "factor"), y = c(232L, 23571L, 6657L, 108950L)), class = "data.frame", row.names = c(NA, 
+-4L)), vnam = "Discapacidad_Ver_p1906s3")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Discapacidad\_Moverse\_Caminar\_p1906s4
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      365250 (72.38 %)
+
+Number of unique values                    4
+
+Mode                        "Sin dificultad"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-53-Discapacidad-Moverse-Caminar-p1906s4', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:4, levels = c("No puede hacerlo", 
+"Sí, con alguna dificultad", "Sí, con mucha dificultad", "Sin dificultad"
+), class = "factor"), y = c(816L, 6551L, 2780L, 129263L)), class = "data.frame", row.names = c(NA, 
+-4L)), vnam = "Discapacidad_Moverse_Caminar_p1906s4")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Discapacidad\_Usar\_Manos\_p1906s5
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      365250 (72.38 %)
+
+Number of unique values                    4
+
+Mode                        "Sin dificultad"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-54-Discapacidad-Usar-Manos-p1906s5', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:4, levels = c("No puede hacerlo", 
+"Sí, con alguna dificultad", "Sí, con mucha dificultad", "Sin dificultad"
+), class = "factor"), y = c(348L, 3085L, 1094L, 134883L)), class = "data.frame", row.names = c(NA, 
+-4L)), vnam = "Discapacidad_Usar_Manos_p1906s5")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Discapacidad\_Entender\_p1906s6
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      365250 (72.38 %)
+
+Number of unique values                    4
+
+Mode                        "Sin dificultad"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-55-Discapacidad-Entender-p1906s6', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:4, levels = c("No puede hacerlo", 
+"Sí, con alguna dificultad", "Sí, con mucha dificultad", "Sin dificultad"
+), class = "factor"), y = c(1066L, 2659L, 984L, 134701L)), class = "data.frame", row.names = c(NA, 
+-4L)), vnam = "Discapacidad_Entender_p1906s6")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Discapacidad\_Comer\_Vestirse\_Bañarse\_Solo\_p1906s7
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      365250 (72.38 %)
+
+Number of unique values                    4
+
+Mode                        "Sin dificultad"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-56-Discapacidad-Comer-Vestirse-Banarse-Solo-p1906s7', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:4, levels = c("No puede hacerlo", 
+"Sí, con alguna dificultad", "Sí, con mucha dificultad", "Sin dificultad"
+), class = "factor"), y = c(1236L, 1240L, 483L, 136451L)), class = "data.frame", row.names = c(NA, 
+-4L)), vnam = "Discapacidad_Comer_Vestirse_Bañarse_Solo_p1906s7")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Discapacidad\_Relacionarse\_p1906s8
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      365250 (72.38 %)
+
+Number of unique values                    4
+
+Mode                        "Sin dificultad"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-57-Discapacidad-Relacionarse-p1906s8', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:4, levels = c("No puede hacerlo", 
+"Sí, con alguna dificultad", "Sí, con mucha dificultad", "Sin dificultad"
+), class = "factor"), y = c(691L, 1154L, 535L, 137030L)), class = "data.frame", row.names = c(NA, 
+-4L)), vnam = "Discapacidad_Relacionarse_p1906s8")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Dias\_Cita\_consulta\_Acudio\_especialista\_p6199
+
+* The variable only takes one value: \"NA\".
+
+
+
+---
+
+## Dias\_Cita\_consulta\_Medico\_p6199
+
+<div class = "row">
+<div class = "col-lg-8">
+
+-------------------------------------------
+Feature                              Result
+------------------------- -----------------
+Variable type                       numeric
+
+Number of missing obs.      490020 (97.1 %)
+
+Number of unique values                  28
+
+Median                                    1
+
+1st and 3rd quartiles                  0; 3
+
+Min. and max.                         0; 30
+-------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-59-Dias-Cita-consulta-Medico-p6199', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggHist(data = structure(list(xmin = c(0, 2, 4, 6, 8, 10, 12, 
+14, 16, 18, 20, 22, 24, 26, 28), xmax = c(2, 4, 6, 8, 10, 12, 
+14, 16, 18, 20, 22, 24, 26, 28, 30), ymin = c(0, 0, 0, 0, 0, 
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0), ymax = c(10584L, 1487L, 443L, 
+1025L, 126L, 35L, 15L, 376L, 9L, 139L, 5L, 4L, 14L, 5L, 373L)), class = "data.frame", row.names = c(NA, 
+-15L)), vnam = "Dias_Cita_consulta_Medico_p6199")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Dias\_Cita\_consulta\_Odontologo\_p6199
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                        numeric
+
+Number of missing obs.      503313 (99.73 %)
+
+Number of unique values                   21
+
+Median                                     1
+
+1st and 3rd quartiles                   0; 3
+
+Min. and max.                          0; 30
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-60-Dias-Cita-consulta-Odontologo-p6199', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggHist(data = structure(list(xmin = c(0, 2, 4, 6, 8, 10, 12, 
+14, 16, 18, 20, 22, 24, 26, 28), xmax = c(2, 4, 6, 8, 10, 12, 
+14, 16, 18, 20, 22, 24, 26, 28, 30), ymin = c(0, 0, 0, 0, 0, 
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0), ymax = c(931L, 133L, 34L, 123L, 
+18L, 3L, 1L, 40L, 1L, 16L, 0L, 0L, 1L, 1L, 45L)), class = "data.frame", row.names = c(NA, 
+-15L)), vnam = "Dias_Cita_consulta_Odontologo_p6199")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Algun\_miembro\_Hogar\_No\_Consumio\_Ninguna\_Comida\_Un\_Dia\_O\_Mas\_p8706
+
+<div class = "row">
+<div class = "col-lg-8">
+
+-------------------------------------------
+Feature                              Result
+------------------------- -----------------
+Variable type                     character
+
+Number of missing obs.      74240 (14.71 %)
+
+Number of unique values                   2
+
+Mode                                   "No"
+-------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-61-Algun-miembro-Hogar-No-Consumio-Ninguna-Comida-Un-Dia-O-Mas-p8706', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No", 
+"Sí"), class = "factor"), y = c(405546L, 24874L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Algun_miembro_Hogar_No_Consumio_Ninguna_Comida_Un_Dia_O_Mas_p8706")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Controles\_Crecimiento\_Desarrollo\_p6161
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      491947 (97.48 %)
+
+Number of unique values                    2
+
+Mode                                    "Sí"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-62-Controles-Crecimiento-Desarrollo-p6161', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No", 
+"Sí"), class = "factor"), y = c(1296L, 11417L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Controles_Crecimiento_Desarrollo_p6161")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Controles\_Crecimiento\_Desarrollo\_numero\_p6161
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                        numeric
+
+Number of missing obs.      493243 (97.74 %)
+
+Number of unique values                   18
+
+Median                                     2
+
+1st and 3rd quartiles                   2; 3
+
+Min. and max.                          1; 24
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-63-Controles-Crecimiento-Desarrollo-numero-p6161', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggHist(data = structure(list(xmin = c(0, 2, 4, 6, 8, 10, 12, 
+14, 16, 18, 20, 22), xmax = c(2, 4, 6, 8, 10, 12, 14, 16, 18, 
+20, 22, 24), ymin = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), ymax = c(7048L, 
+3516L, 612L, 105L, 52L, 72L, 2L, 5L, 0L, 1L, 0L, 4L)), class = "data.frame", row.names = c(NA, 
+-12L)), vnam = "Controles_Crecimiento_Desarrollo_numero_p6161")
+```
+
+</div>
+</div>
+
+
+- Note that the following possible outlier values were detected: \"1\". 
+
+
+
+---
+
+## Alfabeta\_p6160
+
+<div class = "row">
+<div class = "col-lg-8">
+
+------------------------------------------
+Feature                             Result
+------------------------- ----------------
+Variable type                    character
+
+Number of missing obs.      38476 (7.62 %)
+
+Number of unique values                  2
+
+Mode                                  "Sí"
+------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-64-Alfabeta-p6160', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No", 
+"Sí"), class = "factor"), y = c(39474L, 426710L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Alfabeta_p6160")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Asiste\_Educacion\_p8586
+
+<div class = "row">
+<div class = "col-lg-8">
+
+------------------------------------------
+Feature                             Result
+------------------------- ----------------
+Variable type                    character
+
+Number of missing obs.      38476 (7.62 %)
+
+Number of unique values                  2
+
+Mode                                  "No"
+------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-65-Asiste-Educacion-p8586', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No", 
+"Sí"), class = "factor"), y = c(328655L, 137529L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Asiste_Educacion_p8586")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Razon\_No\_Estudio\_p6218
+
+<div class = "row">
+<div class = "col-lg-8">
+
+-----------------------------------------------
+Feature                                  Result
+------------------------- ---------------------
+Variable type                         character
+
+Number of missing obs.         390923 (77.46 %)
+
+Number of unique values                      15
+
+Mode                        "Necesita trabajar"
+-----------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-66-Razon-No-Estudio-p6218', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:15, levels = c("Cambio de residencia", 
+"Considera que no está en edad escolar", "Considera que ya terminó", 
+"Costo elevado o falta de dinero", "Debe encargarse del hogar", 
+"Educación especial", "Inseguridad o malos tratos en el establecimiento educativo", 
+"Necesita trabajar", "No existe centro educativo cercano", "No le gusta o no interesa el estudio", 
+"Otros", "Por embarazo", "Por enfermedad", "Por situaciones académicas (bajos resultados en el periodo académico, repetición de cursos", 
+"Sus padres no lo consideran importante"), class = "factor"), 
+    y = c(1330L, 3429L, 13505L, 23789L, 14820L, 1133L, 387L, 
+    33684L, 1808L, 12164L, 3202L, 2756L, 1531L, 2L, 197L)), class = "data.frame", row.names = c(NA, 
+-15L)), vnam = "Razon_No_Estudio_p6218")
+```
+
+</div>
+</div>
+
+
+- Note that the following levels have at most five observations: \"Por situaciones académicas (bajos resultados en el periodo académico, repetición de cursos\". 
+
+
+
+---
+
+## Razon\_No\_Estudio\_Agregada\_p6218
+
+<div class = "row">
+<div class = "col-lg-8">
+
+---------------------------------------------
+Feature                                Result
+------------------------- -------------------
+Variable type                       character
+
+Number of missing obs.       390923 (77.46 %)
+
+Number of unique values                     2
+
+Mode                        "Barreras_Acceso"
+---------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-67-Razon-No-Estudio-Agregada-p6218', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("Barreras_Acceso", 
+"Razones_Personales"), class = "factor"), y = c(83309L, 30428L
+)), class = "data.frame", row.names = c(NA, -2L)), vnam = "Razon_No_Estudio_Agregada_p6218")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Nivel\_Educativo\_Actual\_p8587
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      176005 (34.88 %)
+
+Number of unique values                   13
+
+Mode                              "Primaria"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-68-Nivel-Educativo-Actual-p8587', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:13, levels = c("Media", 
+"Ninguno", "Posgrado con título", "Posgrado sin título", "Preescolar", 
+"Primaria", "Secundaria", "Técnico con título", "Técnico sin título", 
+"Tecnológico con título", "Tecnológico sin título", "Universitaria con título", 
+"Universitaria sin título"), class = "factor"), y = c(78997L, 
+27234L, 5418L, 220L, 742L, 116648L, 50564L, 17768L, 2003L, 6633L, 
+851L, 17805L, 3772L)), class = "data.frame", row.names = c(NA, 
+-13L)), vnam = "Nivel_Educativo_Actual_p8587")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Nivel\_Educativo\_Alcanzado\_p1088
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      367131 (72.75 %)
+
+Number of unique values                    8
+
+Mode                              "Primaria"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-69-Nivel-Educativo-Alcanzado-p1088', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:8, levels = c("Media", 
+"Postgrado", "Preescolar", "Primaria", "Secundaria", "Técnico", 
+"Tecnológico", "Universitario"), class = "factor"), y = c(15276L, 
+1315L, 9978L, 52210L, 39227L, 5207L, 2354L, 11962L)), class = "data.frame", row.names = c(NA, 
+-8L)), vnam = "Nivel_Educativo_Alcanzado_p1088")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Anos\_de\_Educacion
+
+<div class = "row">
+<div class = "col-lg-8">
+
+-----------------------------------
+Feature                      Result
+------------------------- ---------
+Variable type               numeric
+
+Number of missing obs.      0 (0 %)
+
+Number of unique values          32
+
+Median                            5
+
+1st and 3rd quartiles         2; 11
+
+Min. and max.                 0; 31
+-----------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-70-Anos-de-Educacion', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggHist(data = structure(list(xmin = c(0, 2, 4, 6, 8, 10, 12, 
+14, 16, 18, 20, 22, 24, 26, 28, 30), xmax = c(2, 4, 6, 8, 10, 
+12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32), ymin = c(0, 0, 0, 
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), ymax = c(137085L, 57503L, 
+83993L, 43525L, 33731L, 86821L, 28976L, 20831L, 5064L, 1002L, 
+1923L, 2810L, 981L, 263L, 87L, 65L)), class = "data.frame", row.names = c(NA, 
+-16L)), vnam = "Anos_de_Educacion")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Anos\_de\_Educacion.jefe
+
+<div class = "row">
+<div class = "col-lg-8">
+
+-----------------------------------
+Feature                      Result
+------------------------- ---------
+Variable type               numeric
+
+Number of missing obs.      0 (0 %)
+
+Number of unique values          32
+
+Median                            0
+
+1st and 3rd quartiles          0; 2
+
+Min. and max.                 0; 31
+-----------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-71-Anos-de-Educacion-jefe', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggHist(data = structure(list(xmin = c(0, 2, 4, 6, 8, 10, 12, 
+14, 16, 18, 20, 22, 24, 26, 28, 30), xmax = c(2, 4, 6, 8, 10, 
+12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32), ymin = c(0, 0, 0, 
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), ymax = c(380808L, 19394L, 
+30160L, 11178L, 7907L, 30497L, 9864L, 8342L, 2367L, 511L, 1052L, 
+1666L, 631L, 173L, 66L, 44L)), class = "data.frame", row.names = c(NA, 
+-16L)), vnam = "Anos_de_Educacion.jefe")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Analfabetismo\_IPM
+
+<div class = "row">
+<div class = "col-lg-8">
+
+-------------------------------------
+Feature                        Result
+------------------------- -----------
+Variable type               character
+
+Number of missing obs.        0 (0 %)
+
+Number of unique values             2
+
+Mode                             "No"
+-------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-72-Analfabetismo-IPM', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No", 
+"Si"), class = "factor"), y = c(477932L, 26728L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Analfabetismo_IPM")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Rezago\_Escolar\_IPM
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      399906 (79.24 %)
+
+Number of unique values                    2
+
+Mode                                    "Si"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-73-Rezago-Escolar-IPM', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No", 
+"Si"), class = "factor"), y = c(35252L, 69502L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Rezago_Escolar_IPM")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+## Inasistencia\_Escolar\_IPM
+
+<div class = "row">
+<div class = "col-lg-8">
+
+--------------------------------------------
+Feature                               Result
+------------------------- ------------------
+Variable type                      character
+
+Number of missing obs.      400430 (79.35 %)
+
+Number of unique values                    2
+
+Mode                                    "No"
+--------------------------------------------
+
+
+</div>
+<div class = "col-lg-4">
+```{r 'Var-74-Inasistencia-Escolar-IPM', echo=FALSE, fig.width=4, fig.height=3, message=FALSE, warning=FALSE}
+ggAggBarplot(data = structure(list(x = structure(1:2, levels = c("No", 
+"Si"), class = "factor"), y = c(97512L, 6718L)), class = "data.frame", row.names = c(NA, 
+-2L)), vnam = "Inasistencia_Escolar_IPM")
+```
+
+</div>
+</div>
+
+
+
+
+---
+
+
+
+Report generation information:
+
+ *  Created by: Ilich Herbert De La Hoz Siegler (username: `ilichherbertdelahozsiegler`).
+
+ *  Report creation time: Sat Feb 03 2024 18:19:49
+
+ *  Report was run from directory: `/Users/ilichherbertdelahozsiegler/Desktop/prueba_adres`
+
+ *  R version 4.3.2 (2023-10-31).
+
+ *  Platform: aarch64-apple-darwin20 (64-bit)(America/Bogota).
+
+
