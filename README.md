@@ -27,3 +27,7 @@ p_healthy_and_p_money.jpg y p_healthy_vs_p_money.jpg muestran las relaciones gr�
 Los archivos second_way.docx y third_way.docx es sólo para las variables que estaban expresadas de forma cuantitativa en el archivo original y revisa frecuencias, medias y outliers.
 El archivo g.docx es la calidad de vida y su relación con p_healthy y p_money, como es el producto de los dos es autoevidente la endogeneidad y autoreferencia de los datos.
 El archivo requirements.txt contiene la paquetería necesaria.
+los archivos p_adres_ilich.pptx y p_adres.qmd son la respuesta al video pedido en la pregunta 4. la version en .qmd es el código con el que se creo la versión en .pptx. 
+La versión en video no la recibe mi versión de github (gratuita). El enlace está ahora abajo.
+# enlace al video de parte 4
+https://www.youtube.com/watch?v=_p8GYa2QuKI
