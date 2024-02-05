@@ -1,0 +1,180 @@
+---
+title: "p_adres, Parte 4"
+author: "Ilich H. De La Hoz Siegler"
+format: pptx
+editor: visual
+---
+
+```{r, include=FALSE}
+# |echo:false
+library(readr)
+db_archivo2 <- read_csv("~/Desktop/prueba_adres/archivo2.txt")|>
+  janitor::clean_names()
+db_archivo2 <- as.data.frame(db_archivo2)
+```
+
+## Summary of the dataset
+
+| Descriptions                                          | Value       |
+|-------------------------------------------------------|-------------|
+| Sample size (nrow)                                    | 504660      |
+| No. of variables (ncol)                               | 74          |
+| No. of numeric/integer variables                      | 9           |
+| No. of factor variables                               | 0           |
+| No. of text variables                                 | 63          |
+| No. of logical variables                              | 2           |
+| No. of identifier variables                           | 0           |
+| No. of date variables                                 | 0           |
+| No. of zero variance variables (uniform)              | 1           |
+| Percentage of variables having complete cases         | 21.62%(16%) |
+| \% of variables having \>0% and \<50% missing cases   | 20.27% (15) |
+| \% of variables having \>=50% and \<90% missing cases | 27.03%(20)  |
+| \% of variables having \>=90% missing cases           | 31.08% (23) |
+
+## Pregunta
+
+¿ Qué factores influyen en la calidad de vida ?
+
+La calidad de vida es fundamentalmente **salud física** y un factor clave para disfrutar el máximo de esa salud es el **dinero**.
+
+Como la calidad de vida no depende de un modelo de vida ideal externo, sino de vivir en función de aquello que verdaderamente valoramos/amamos. 
+
+Entonces usaremos Percepción de **salud física** y de **suficiencia de dinero.**
+
+## Cálculos 1 : Percepciones ajustadas
+
+Las percepciones ya interiorizan y ponderan lo que es importante para cada individuo.
+
+p_money = dplyr::case_when(percepcion_suficiencia_ingresos_p9090 == "Alcanza para cubrir gastos mínimos"\| percepcion_suficiencia_ingresos_p9090 == "Cubre más que gastos mínimos" \~ 1, percepcion_suficiencia_ingresos_p9090 == "No alcanza para cubrir gastos mínimos" \~ 0),
+
+p_healthy= dplyr::case_when(estado_salud_general_p6127 == "1. Muy bueno"\| estado_salud_general_p6127 == "2. Bueno"\~1, estado_salud_general_p6127 == "3. Regular"\| estado_salud_general_p6127 == "4. Malo"\~0)
+
+## Cálculos 2 : Calidad de vida (qol)
+
+::: {#1}
+Calidad de vida (qol) = percepción de salud \* percepción de suficiencia de dinero.
+:::
+
+qol = p_healthy\*p_money
+
+| Qol   | 2012  | 2013  | 2014  | 2015  | 2016  | 2017  | 2018  |
+|-------|-------|-------|-------|-------|-------|-------|-------|
+| Buena | 39559 | 40366 | 38200 | 44808 | 38522 | 15096 | 53148 |
+| Mala  | 34608 | 32789 | 29344 | 31191 | 35790 | 11404 | 59762 |
+
+## Cálculos 3 : p_money y p_healthy
+
+```{r, include=FALSE}
+# |echo:false
+library(dplyr)
+library(gtsummary)
+db_archivo3 <- db_archivo2|> 
+  dplyr::mutate( p_money = dplyr::case_when(
+    percepcion_suficiencia_ingresos_p9090 == "Alcanza para cubrir gastos mínimos"|
+      percepcion_suficiencia_ingresos_p9090 == "Cubre más que gastos mínimos" ~ 1,
+    percepcion_suficiencia_ingresos_p9090 == "No alcanza para cubrir gastos mínimos" ~ 0),
+    p_healthy= dplyr::case_when(estado_salud_general_p6127 == "1. Muy bueno"|
+                                estado_salud_general_p6127 == "2. Bueno"~1,
+                              estado_salud_general_p6127 == "3. Regular"|
+                                estado_salud_general_p6127 == "4. Malo"~0))
+```
+
+```{r}
+  db_archivo3 |> dplyr::select(p_money, p_healthy) |>
+  tbl_summary(by = p_money,
+              missing = "no") |>
+  add_p() |>
+  add_overall() |>
+  add_n()|>
+  modify_header(label ~ "**Variable**") |>
+  modify_spanning_header(c("stat_1", "stat_2") ~ "**p_money**") |>
+  modify_caption("**table1. salud y dinero**") |>
+  bold_labels()
+```
+
+## Cálculos 4 : p_money y p_healthy
+
+![](i.png){fig-align="center"}
+
+## Cálculos 5 : p_money y p_healthy
+
+```{r, include=FALSE}
+# |echo:false
+db_archivo7 <- db_archivo3|>dplyr::select(c(p_money, p_healthy,ano))|>
+                                            dplyr::mutate(qol= p_healthy*p_money)
+```
+
+```{r}
+tbl_summary(db_archivo7, by=qol)|>
+  add_p()|>
+  add_q()|>
+  add_ci()|>
+  modify_header(label ~ "**Variable**") |>
+  modify_spanning_header(c("stat_1", "stat_2") ~ "**QoL**") |>
+  modify_caption("**table2. QoL**") |>
+  bold_labels()
+```
+
+## Cálculos 6 : p_money y p_healthy
+
+```{r, include=FALSE}
+# |echo:false
+db_archivo5 <- db_archivo3|>dplyr::select(c(p_money, p_healthy))
+pv1 <- ggstatsplot::ggbetweenstats(data = db_archivo5,
+                            x = p_healthy,
+                            y = p_money,
+                            type = "np",
+                            title =" Non-parametric Test")
+
+pv2 <- ggstatsplot::ggbetweenstats(data = db_archivo5,
+                            x = p_healthy,
+                            y = p_money,
+                            type = "p",
+                            title = "Parametric test")
+```
+
+```{r}
+ggstatsplot::combine_plots(
+  list(pv1, pv2),
+  plotgrid.args = list(nrow =1),
+  annotation.args = list(
+    title = "Comparison between p_healthy and p_money",
+    caption ="Source: prueba técnica Adres"
+  ))
+```
+
+## Cálculos 7 : p_money y p_healthy
+
+```{r}
+library(ggstatsplot)
+ggstatsplot::ggcorrmat(data = db_archivo5)
+```
+
+## Cálculos 8 : p_money y p_healthy
+
+```{r}
+library(sjPlot)
+plot_grpfrq(var.cnt = db_archivo3$p_healthy,
+            var.grp = db_archivo3$p_money)
+
+```
+
+## Cálculos 9 : p_money y p_healthy
+
+```{r}
+#|echo: true
+lm(p_healthy ~ p_money,
+     data =  db_archivo3,
+     na.action = na.exclude)
+```
+
+## Cálculos 10 : p_money y p_healthy
+
+```{r}
+hypoth_lm_a <-
+  lm(p_healthy ~ p_money,
+     data =  db_archivo3,
+     na.action = na.exclude)
+summary(hypoth_lm_a)
+
+```
